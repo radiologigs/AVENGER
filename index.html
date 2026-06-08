@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roster Shift Pegawai</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    margin:20px;
+}
+
+h2{
+    margin-bottom:10px;
+}
+
+.table-container{
+    overflow:auto;
+    border:1px solid #ccc;
+}
+
+table{
+    border-collapse:collapse;
+    min-width:1800px;
+}
+
+th,td{
+    border:1px solid #888;
+    text-align:center;
+    padding:0;
+    height:30px;
+}
+
+th{
+    background:#e5e5e5;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.sticky{
+    position:sticky;
+    left:0;
+    background:white;
+    z-index:5;
+}
+
+.sticky2{
+    position:sticky;
+    left:120px;
+    background:white;
+    z-index:5;
+}
+
+.sticky3{
+    position:sticky;
+    left:220px;
+    background:white;
+    z-index:5;
+}
+
+.nama{
+    width:120px;
+}
+
+.nik{
+    width:100px;
+}
+
+.unit{
+    width:80px;
+}
+
+.day{
+    width:45px;
+}
+
+select{
+    width:100%;
+    height:100%;
+    border:none;
+    text-align:center;
+    font-size:12px;
+    background:white;
+}
+
+.psn{
+    background:#00e5ff !important;
+}
+
+.mn{
+    background:#00e5ff !important;
+}
+
+.mj{
+    background:#f2f2f2 !important;
+}
+
+.sb{
+    background:#ffe082 !important;
+}
+
+.r{
+    background:white !important;
+}
+</style>
+</head>
+<body>
+
+<h2>Roster Shift Pegawai</h2>
+
+<div class="table-container">
+<table id="roster">
+
+<thead>
+<tr>
+<th class="sticky nama">Nama</th>
+<th class="sticky2 nik">NIK</th>
+<th class="sticky3 unit">Unit</th>
+</tr>
+</thead>
+
+<tbody id="tbody"></tbody>
+
+</table>
+</div>
+
+<script>
+
+const totalHari = 31;
+
+const pegawai = [
+{
+nama:"ARI WEBE",
+nik:"1987001",
+unit:"CNS"
+},
+{
+nama:"BUDI",
+nik:"1987002",
+unit:"ATM"
+},
+{
+nama:"JOKO",
+nik:"1987003",
+unit:"Listrik"
+},
+{
+nama:"RUDI",
+nik:"1987004",
+unit:"IT"
+},
+{
+nama:"ANDI",
+nik:"1987005",
+unit:"CNS"
+}
+];
+
+const table = document.querySelector("#roster thead tr");
+
+for(let i=1;i<=totalHari;i++){
+    const th=document.createElement("th");
+    th.className="day";
+    th.innerHTML=i;
+    table.appendChild(th);
+}
+
+const tbody=document.getElementById("tbody");
+
+pegawai.forEach(p=>{
+
+let row=`
+<tr>
+<td class="sticky nama">${p.nama}</td>
+<td class="sticky2 nik">${p.nik}</td>
+<td class="sticky3 unit">${p.unit}</td>
+`;
+
+for(let i=1;i<=totalHari;i++){
+
+row += `
+<td>
+<select onchange="setColor(this)">
+<option value=""></option>
+<option value="PSN">PSN</option>
+<option value="MJ">MJ</option>
+<option value="MN">MN</option>
+<option value="R">R</option>
+<option value="SB">SB</option>
+</select>
+</td>
+`;
+
+}
+
+row += "</tr>";
+
+tbody.innerHTML += row;
+
+});
+
+function setColor(el){
+
+el.classList.remove(
+'psn',
+'mn',
+'mj',
+'r',
+'sb'
+);
+
+let val=el.value;
+
+if(val==="PSN"){
+el.classList.add("psn");
+}
+else if(val==="MN"){
+el.classList.add("mn");
+}
+else if(val==="MJ"){
+el.classList.add("mj");
+}
+else if(val==="R"){
+el.classList.add("r");
+}
+else if(val==="SB"){
+el.classList.add("sb");
+}
+
+}
+</script>
+
+</body>
+</html>
