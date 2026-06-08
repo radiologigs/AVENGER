@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Input Roster Shift</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    margin:20px;
+}
+
+.container{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input,select{
+    width:100%;
+    padding:8px;
+    box-sizing:border-box;
+}
+
+button{
+    background:#007bff;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ccc;
+    padding:8px;
+    text-align:center;
+}
+
+th{
+    background:#eaeaea;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h2>Form Input Roster Pegawai</h2>
+
+<div class="form-group">
+<label>Nama Pegawai</label>
+<select id="nama" onchange="isiData()">
+<option value="">-- Pilih Pegawai --</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>NIK</label>
+<input type="text" id="nik" readonly>
+</div>
+
+<div class="form-group">
+<label>Unit</label>
+<input type="text" id="unit" readonly>
+</div>
+
+<div class="form-group">
+<label>Bulan</label>
+<select id="bulan">
+<option>Januari</option>
+<option>Februari</option>
+<option>Maret</option>
+<option>April</option>
+<option>Mei</option>
+<option>Juni</option>
+<option>Juli</option>
+<option>Agustus</option>
+<option>September</option>
+<option>Oktober</option>
+<option>November</option>
+<option>Desember</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Tahun</label>
+<input type="number" id="tahun" value="2026">
+</div>
+
+<div class="form-group">
+<label>Pattern Shift</label>
+<input
+type="text"
+id="pattern"
+placeholder="Contoh: PSN-MJ-R-PSN-MN-R">
+</div>
+
+<button onclick="simpanRoster()">
+Simpan Roster
+</button>
+
+<table id="tblRoster">
+<thead>
+<tr>
+<th>Nama</th>
+<th>NIK</th>
+<th>Unit</th>
+<th>Bulan</th>
+<th>Tahun</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+</div>
+
+<script>
+
+// Simulasi data dari Google Sheet
+const pegawai = [
+{
+nama:"ARI WEBE",
+nik:"1987001",
+unit:"CNS"
+},
+{
+nama:"BUDI",
+nik:"1987002",
+unit:"ATM"
+},
+{
+nama:"JOKO",
+nik:"1987003",
+unit:"ELEKTRIKAL"
+},
+{
+nama:"RUDI",
+nik:"1987004",
+unit:"IT"
+}
+];
+
+// isi dropdown nama
+const dropdown = document.getElementById("nama");
+
+pegawai.forEach(p => {
+
+let opt = document.createElement("option");
+
+opt.value = p.nama;
+opt.text = p.nama;
+
+dropdown.appendChild(opt);
+
+});
+
+// autofill NIK & Unit
+function isiData(){
+
+let nama = document.getElementById("nama").value;
+
+let data = pegawai.find(
+x => x.nama === nama
+);
+
+if(data){
+
+document.getElementById("nik").value =
+data.nik;
+
+document.getElementById("unit").value =
+data.unit;
+
+}
+
+}
+
+// simpan roster
+function simpanRoster(){
+
+let nama =
+document.getElementById("nama").value;
+
+let nik =
+document.getElementById("nik").value;
+
+let unit =
+document.getElementById("unit").value;
+
+let bulan =
+document.getElementById("bulan").value;
+
+let tahun =
+document.getElementById("tahun").value;
+
+let pattern =
+document.getElementById("pattern").value;
+
+if(!nama){
+alert("Pilih pegawai dulu");
+return;
+}
+
+let tbody =
+document.querySelector("#tblRoster tbody");
+
+let row = `
+<tr>
+<td>${nama}</td>
+<td>${nik}</td>
+<td>${unit}</td>
+<td>${bulan}</td>
+<td>${tahun}</td>
+<td>${pattern}</td>
+</tr>
+`;
+
+tbody.innerHTML += row;
+
+}
+</script>
+
+</body>
+</html>
