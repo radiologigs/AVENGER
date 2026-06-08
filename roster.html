@@ -3,35 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Input Roster Shift</title>
+<title>Roster Personel CNSD & EME JATSC</title>
 
 <style>
 
 body{
-    font-family: Arial, sans-serif;
-    background:#f4f4f4;
+    font-family:Arial, sans-serif;
+    background:#f5f5f5;
     margin:20px;
 }
 
 .container{
-    background:white;
+    background:#fff;
     padding:20px;
     border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,.1);
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
 h2{
     margin-bottom:20px;
 }
 
-.form-group{
-    margin-bottom:15px;
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+    margin-bottom:20px;
 }
 
 label{
     display:block;
-    margin-bottom:5px;
     font-weight:bold;
+    margin-bottom:5px;
 }
 
 input,select{
@@ -45,28 +48,75 @@ button{
     color:white;
     border:none;
     padding:10px 20px;
-    cursor:pointer;
     border-radius:5px;
+    cursor:pointer;
 }
 
 button:hover{
     background:#0056b3;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
+.table-container{
+    overflow-x:auto;
     margin-top:20px;
 }
 
+table{
+    border-collapse:collapse;
+    min-width:1200px;
+    background:white;
+}
+
 th,td{
-    border:1px solid #ccc;
-    padding:8px;
+    border:1px solid #999;
+    padding:6px;
     text-align:center;
+    white-space:nowrap;
 }
 
 th{
-    background:#eaeaea;
+    background:#e9ecef;
+}
+
+.ps{
+    background:#81d4fa;
+}
+
+.p{
+    background:#aed581;
+}
+
+.s{
+    background:#ffcc80;
+}
+
+.m{
+    background:#90caf9;
+}
+
+.r{
+    background:#ffffff;
+}
+
+.sticky{
+    position:sticky;
+    left:0;
+    background:white;
+    z-index:2;
+}
+
+.sticky2{
+    position:sticky;
+    left:150px;
+    background:white;
+    z-index:2;
+}
+
+.sticky3{
+    position:sticky;
+    left:250px;
+    background:white;
+    z-index:2;
 }
 
 </style>
@@ -77,19 +127,21 @@ th{
 
 <h2>Roster Personel CNSD & EME JATSC</h2>
 
-<div class="form-group">
+<div class="form-grid">
+
+<div>
 <label>Nama Pegawai</label>
 <select id="nama" onchange="isiData()">
 <option value="">-- Pilih Pegawai --</option>
 </select>
 </div>
 
-<div class="form-group">
+<div>
 <label>NIK</label>
 <input type="text" id="nik" readonly>
 </div>
 
-<div class="form-group">
+<div>
 <label>Unit</label>
 <select id="unit">
 <option>Radkom</option>
@@ -97,105 +149,113 @@ th{
 <option>Navigasi</option>
 <option>Surveillance</option>
 <option>AMSC</option>
-<option>RDPS</option>   
+<option>RDPS</option>
 </select>
 </div>
 
-<div class="form-group">
+<div>
 <label>Bulan</label>
 <select id="bulan">
-<option>Januari</option>
-<option>Februari</option>
-<option>Maret</option>
-<option>April</option>
-<option>Mei</option>
-<option>Juni</option>
-<option>Juli</option>
-<option>Agustus</option>
-<option>September</option>
-<option>Oktober</option>
-<option>November</option>
-<option>Desember</option>
+<option value="0">Januari</option>
+<option value="1">Februari</option>
+<option value="2">Maret</option>
+<option value="3">April</option>
+<option value="4">Mei</option>
+<option value="5">Juni</option>
+<option value="6">Juli</option>
+<option value="7">Agustus</option>
+<option value="8">September</option>
+<option value="9">Oktober</option>
+<option value="10">November</option>
+<option value="11">Desember</option>
 </select>
 </div>
 
-<div class="form-group">
+<div>
 <label>Tahun</label>
 <input type="number" id="tahun" value="2026">
 </div>
 
-<div class="form-group">
-<label>Shift</label>
+<div>
+<label>Pattern Shift</label>
 <select id="shift">
 <option>PS-M-R-R</option>
 <option>P-S-M-R-R</option>
-<input
-type="text"
-id="pattern"
-placeholder="Contoh: PS-M-R-R">
+<option>PS-MN-R-R</option>
+<option>P-S-MN-R-R</option>
+</select>
 </div>
 
-<button onclick="simpanRoster()">
-Simpan Roster
+</div>
+
+<button onclick="tambahRoster()">
+Tambah Ke Roster
 </button>
 
+<div class="table-container">
+
 <table id="tblRoster">
+
 <thead>
 <tr>
-<th>Nama</th>
-<th>NIK</th>
-<th>Unit</th>
-<th>Bulan</th>
-<th>Tahun</th>
-<th>Pattern</th>
+<th class="sticky">Nama</th>
+<th class="sticky2">NIK</th>
+<th class="sticky3">Unit</th>
 </tr>
 </thead>
-<tbody></tbody>
+
+<tbody>
+
+</tbody>
+
 </table>
+
+</div>
 
 </div>
 
 <script>
 
-// Simulasi data dari Google Sheet
+// DATA PEGAWAI
 const pegawai = [
+
 {
 nama:"ARI WEBE",
-nik:"1987001",
-unit:"CNS"
+nik:"1987001"
 },
+
 {
 nama:"BUDI",
-nik:"1987002",
-unit:"ATM"
+nik:"1987002"
 },
+
 {
 nama:"JOKO",
-nik:"1987003",
-unit:"ELEKTRIKAL"
+nik:"1987003"
 },
+
 {
 nama:"RUDI",
-nik:"1987004",
-unit:"IT"
+nik:"1987004"
 }
+
 ];
 
-// isi dropdown nama
+// isi dropdown
 const dropdown = document.getElementById("nama");
 
-pegawai.forEach(p => {
+pegawai.forEach(p=>{
 
 let opt = document.createElement("option");
 
 opt.value = p.nama;
-opt.text = p.nama;
+opt.textContent = p.nama;
 
 dropdown.appendChild(opt);
 
 });
 
-// autofill NIK & Unit
+// autofill nik
 function isiData(){
 
 let nama = document.getElementById("nama").value;
@@ -204,20 +264,36 @@ let data = pegawai.find(
 x => x.nama === nama
 );
 
-if(data){
-
 document.getElementById("nik").value =
-data.nik;
-
-document.getElementById("unit").value =
-data.unit;
+data ? data.nik : "";
 
 }
 
+// generate header tanggal
+function generateHeader(jumlahHari){
+
+let html = `
+<tr>
+<th class="sticky">Nama</th>
+<th class="sticky2">NIK</th>
+<th class="sticky3">Unit</th>
+`;
+
+for(let i=1;i<=jumlahHari;i++){
+
+html += `<th>${i}</th>`;
+
 }
 
-// simpan roster
-function simpanRoster(){
+html += "</tr>";
+
+document.querySelector("#tblRoster thead").innerHTML =
+html;
+
+}
+
+// tambah roster
+function tambahRoster(){
 
 let nama =
 document.getElementById("nama").value;
@@ -229,36 +305,64 @@ let unit =
 document.getElementById("unit").value;
 
 let bulan =
-document.getElementById("bulan").value;
+parseInt(document.getElementById("bulan").value);
 
 let tahun =
-document.getElementById("tahun").value;
+parseInt(document.getElementById("tahun").value);
 
 let pattern =
-document.getElementById("pattern").value;
+document.getElementById("shift").value;
 
 if(!nama){
-alert("Pilih pegawai dulu");
+
+alert("Pilih pegawai");
+
 return;
+
 }
 
-let tbody =
-document.querySelector("#tblRoster tbody");
+// jumlah hari dalam bulan
+let jumlahHari =
+new Date(tahun, bulan + 1, 0).getDate();
+
+generateHeader(jumlahHari);
+
+// pecah pattern
+let pola =
+pattern.split("-");
 
 let row = `
 <tr>
-<td>${nama}</td>
-<td>${nik}</td>
-<td>${unit}</td>
-<td>${bulan}</td>
-<td>${tahun}</td>
-<td>${pattern}</td>
-</tr>
+<td class="sticky">${nama}</td>
+<td class="sticky2">${nik}</td>
+<td class="sticky3">${unit}</td>
 `;
 
-tbody.innerHTML += row;
+for(let i=0;i<jumlahHari;i++){
+
+let shift =
+pola[i % pola.length];
+
+let cls = shift.toLowerCase();
+
+row += `
+<td class="${cls}">
+${shift}
+</td>
+`;
 
 }
+
+row += "</tr>";
+
+document.querySelector("#tblRoster tbody")
+.insertAdjacentHTML(
+"beforeend",
+row
+);
+
+}
+
 </script>
 
 </body>
